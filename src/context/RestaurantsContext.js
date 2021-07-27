@@ -10,9 +10,6 @@ export const RestaurantsContextProvider = (props) => {
     setRestaurants([...restaurants, restaurant]);
   };
 
-  // const updateRestaurant = (restaurant) => {
-  //   setRestaurants
-  // }
   return (
     <RestaurantsContext.Provider
       value={{
