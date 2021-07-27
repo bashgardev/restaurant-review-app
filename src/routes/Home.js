@@ -1,4 +1,5 @@
 import React from "react";
+import { Container } from "react-bootstrap";
 import AddRestaurant from "../components/AddRestaurant";
 import Header from "../components/Header";
 import RestaurantList from "../components/RestaurantList";
@@ -7,9 +8,11 @@ import "./Home.css";
 const Home = () => {
   return (
     <div>
-      <Header />
-      <AddRestaurant />
-      <RestaurantList />
+      <Container>
+        <Header />
+        <AddRestaurant />
+        <RestaurantList />
+      </Container>
     </div>
   );
 };

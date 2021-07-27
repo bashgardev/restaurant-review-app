@@ -22,9 +22,10 @@ const RestaurantList = (props) => {
       }
     };
     fetchData();
-  });
+  }, [setRestaurants]);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (e, id) => {
+    e.stopPropagation();
     try {
       await RestaurantFinder.delete(`/${id}`);
       setRestaurants(
@@ -37,8 +38,13 @@ const RestaurantList = (props) => {
     }
   };
 
-  const handleUpdate = (id) => {
+  const handleUpdate = (e, id) => {
+    e.stopPropagation();
     history.push(`/restaurants/${id}/update`);
+  };
+
+  const handleRestaurantSelect = (id) => {
+    history.push(`/restaurants/${id}`);
   };
 
   return (
@@ -57,14 +63,17 @@ const RestaurantList = (props) => {
         {restaurants &&
           restaurants.map((restaurant) => {
             return (
-              <tr key={restaurant.id}>
+              <tr
+                onClick={(e) => handleRestaurantSelect(restaurant.id)}
+                key={restaurant.id}
+              >
                 <td>{restaurant.name}</td>
                 <td>{restaurant.location}</td>
                 <td>{"$".repeat(restaurant.price_range)}</td>
                 <td>N/A</td>
                 <td>
                   <Button
-                    onClick={() => handleUpdate(restaurant.id)}
+                    onClick={(e) => handleUpdate(e, restaurant.id)}
                     variant="warning"
                   >
                     Update
@@ -72,8 +81,8 @@ const RestaurantList = (props) => {
                 </td>
                 <td>
                   <Button
-                    onClick={() => {
-                      handleDelete(restaurant.id);
+                    onClick={(e) => {
+                      handleDelete(e, restaurant.id);
                     }}
                     variant="danger"
                   >
