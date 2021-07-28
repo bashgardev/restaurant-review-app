@@ -15,18 +15,21 @@ const RestaurantDetailPage = (props) => {
     const fetchData = async () => {
       try {
         const response = await RestaurantFinder.get(`/${id}`);
-        setSelectedRestaurant(response.data.data.restaurant);
+        setSelectedRestaurant(response.data.data);
+        // console.log("selected");
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-  }, [setSelectedRestaurant, id]);
+  }, []);
 
   return (
     <div>
       <Container>
-        <h1>{selectedRestaurant && selectedRestaurant.name}</h1>
+        <h1 className="mb-3 mt-3">
+          {selectedRestaurant && selectedRestaurant.restaurant.name}
+        </h1>
         <Reviews />
         <AddReview />
       </Container>
