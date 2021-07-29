@@ -1,10 +1,31 @@
 import React, { useContext, useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import RestaurantFinder from "../apis/RestaurantFinder";
+import { RestaurantsContext } from "../context/RestaurantsContext";
 
 const AddReview = () => {
+  const { id } = useParams();
   const [username, setUsername] = useState("");
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(1);
+  const { addReview } = useContext(RestaurantsContext);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await RestaurantFinder.post(`/${id}/reviews`, {
+        restaurant_id: id,
+        username: username,
+        review: reviewText,
+        rating: rating,
+      });
+      addReview(response.data.data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -43,7 +64,7 @@ const AddReview = () => {
           />
         </Form.Group>
 
-        <Button type="submit" variant="primary">
+        <Button type="submit" onClick={handleSubmit} variant="primary">
           Add
         </Button>
       </Form>

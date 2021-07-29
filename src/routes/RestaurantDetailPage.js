@@ -5,11 +5,14 @@ import AddReview from "../components/AddReview";
 import Reviews from "../components/Reviews";
 import { RestaurantsContext } from "../context/RestaurantsContext";
 import { Container } from "react-bootstrap";
+import { useSpring, animated } from "react-spring";
 
-const RestaurantDetailPage = (props) => {
+const RestaurantDetailPage = () => {
   const { id } = useParams();
   const { selectedRestaurant, setSelectedRestaurant } =
     useContext(RestaurantsContext);
+
+  const animation = useSpring({ to: { opacity: 1 }, from: { opacity: 0 } });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,7 +28,7 @@ const RestaurantDetailPage = (props) => {
   }, []);
 
   return (
-    <div>
+    <animated.div style={animation}>
       <Container>
         <h1 className="mb-3 mt-3">
           {selectedRestaurant && selectedRestaurant.restaurant.name}
@@ -33,7 +36,7 @@ const RestaurantDetailPage = (props) => {
         <Reviews />
         <AddReview />
       </Container>
-    </div>
+    </animated.div>
   );
 };
 
