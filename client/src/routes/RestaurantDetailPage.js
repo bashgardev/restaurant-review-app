@@ -25,6 +25,8 @@ const RestaurantDetailPage = () => {
       }
     };
     fetchData();
+    // ! intentional
+    // eslint-disable-next-line
   }, []);
 
   return (

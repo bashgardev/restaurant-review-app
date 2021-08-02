@@ -22,7 +22,8 @@ const Reviews = () => {
     };
     fetchData();
 
-    console.log("blip");
+    // ! intentional
+    // eslint-disable-next-line
   }, []);
 
   console.log(reviews);
