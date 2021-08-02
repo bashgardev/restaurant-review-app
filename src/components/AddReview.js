@@ -22,6 +22,10 @@ const AddReview = () => {
       });
       addReview(response.data.data);
       console.log(response);
+
+      // *        This is kinda hacky but helps load newly added reviews
+      // TODO:    better to reformat RestaurantDetailPage and Reviews for better state management
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }

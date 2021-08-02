@@ -21,7 +21,9 @@ const Reviews = () => {
       }
     };
     fetchData();
-  }, [selectedRestaurant]);
+
+    console.log("blip");
+  }, []);
 
   console.log(reviews);
 
