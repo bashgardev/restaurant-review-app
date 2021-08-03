@@ -1,11 +1,15 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
 import RestaurantFinder from "../apis/RestaurantFinder";
 import { RestaurantsContext } from "../context/RestaurantsContext";
 import { useHistory } from "react-router-dom";
+import StarRating from "./StarRating";
 
 const RestaurantList = (props) => {
-  const { restaurants, setRestaurants } = useContext(RestaurantsContext);
+  const { restaurants, setRestaurants, reviews, setReviews } =
+    useContext(RestaurantsContext);
+
+  const [reviewCount, setReviewCount] = useState("");
 
   let history = useHistory();
 
@@ -16,13 +20,15 @@ const RestaurantList = (props) => {
       try {
         const response = await RestaurantFinder.get("/");
         setRestaurants(response.data.data.restaurants);
-        console.log(restaurants);
+        setReviews(response.data.data.reviews);
+        setReviewCount(response.data.data.review_count);
+        console.log(response);
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-  }, [setRestaurants]);
+  }, []);
 
   const handleDelete = async (e, id) => {
     e.stopPropagation();
@@ -47,6 +53,25 @@ const RestaurantList = (props) => {
     history.push(`/restaurants/${id}`);
   };
 
+  const calculateReviewAverage = (reviewArray, restaurant_id) => {
+    let reviewCount = 0;
+    let ratingTotal = 0;
+    reviewArray.forEach((review) => {
+      if (review.restaurant_id === restaurant_id) {
+        reviewCount++;
+        ratingTotal = ratingTotal + review.rating;
+      }
+    });
+    console.log("reviewCount", reviewCount);
+    if (reviewCount) {
+      console.log("ratingTotal", ratingTotal);
+      return ratingTotal / reviewCount;
+    } else {
+      console.log(`No reviews found for ${restaurant_id}`);
+      return reviewCount;
+    }
+  };
+
   return (
     <Table hover size="">
       <thead>
@@ -61,16 +86,33 @@ const RestaurantList = (props) => {
       </thead>
       <tbody>
         {restaurants &&
+          reviews &&
+          reviewCount &&
           restaurants.map((restaurant) => {
             return (
               <tr
-                onClick={(e) => handleRestaurantSelect(restaurant.id)}
+                onClick={() => handleRestaurantSelect(restaurant.id)}
                 key={restaurant.id}
               >
                 <td>{restaurant.name}</td>
                 <td>{restaurant.location}</td>
                 <td>{"$".repeat(restaurant.price_range)}</td>
-                <td>N/A</td>
+                <td>
+                  <StarRating
+                    rating={calculateReviewAverage(
+                      reviews,
+                      restaurant.id
+                    ).toString()}
+                  />
+                  <>
+                    {" "}
+                    {reviewCount.map((value) => {
+                      return value.restaurant_id === restaurant.id
+                        ? `(${value.count})`
+                        : "";
+                    })}
+                  </>
+                </td>
                 <td>
                   <Button
                     onClick={(e) => handleUpdate(e, restaurant.id)}

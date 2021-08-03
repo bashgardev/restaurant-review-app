@@ -1,7 +1,7 @@
-/* body {
-  width: 600px;
+body {
+  max-width: 800px;
   margin: auto;
-} */
+}
 
 h1 {
   text-align: center;

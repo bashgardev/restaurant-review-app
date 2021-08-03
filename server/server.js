@@ -11,11 +11,18 @@ app.use(express.json());
 // get all restaurants
 app.get("/api/v1/restaurants", async (req, res) => {
   try {
-    const results = await db.query("SELECT * FROM restaurants");
+    const restaurants = await db.query("SELECT * FROM restaurants");
+    const reviews = await db.query("SELECT * FROM reviews");
+    const reviewCount = await db.query(
+      "select restaurant_id, count(restaurant_id) from reviews group by restaurant_id;"
+    );
+
     res.status(200).json({
       status: "success",
       data: {
-        restaurants: results.rows,
+        restaurants: restaurants.rows,
+        review_count: reviewCount.rows,
+        reviews: reviews.rows,
       },
     });
   } catch (error) {

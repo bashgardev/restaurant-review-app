@@ -12,8 +12,8 @@ const AddReview = () => {
   const { addReview } = useContext(RestaurantsContext);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     try {
+      e.preventDefault();
       const response = await RestaurantFinder.post(`/${id}/reviews`, {
         restaurant_id: id,
         username: username,

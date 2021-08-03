@@ -13,6 +13,10 @@ const StarRating = ({ rating }) => {
       stars.push(<i key={i} className="far fa-star"></i>);
     }
   }
+  if (rating === "0") {
+    return <>No reviews</>;
+  }
+
   return <>{stars}</>;
 };
 
