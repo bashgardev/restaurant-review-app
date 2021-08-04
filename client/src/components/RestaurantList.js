@@ -62,12 +62,9 @@ const RestaurantList = (props) => {
         ratingTotal = ratingTotal + review.rating;
       }
     });
-    console.log("reviewCount", reviewCount);
     if (reviewCount) {
-      console.log("ratingTotal", ratingTotal);
       return ratingTotal / reviewCount;
     } else {
-      console.log(`No reviews found for ${restaurant_id}`);
       return reviewCount;
     }
   };
@@ -99,16 +96,12 @@ const RestaurantList = (props) => {
                 <td>{"$".repeat(restaurant.price_range)}</td>
                 <td>
                   <StarRating
-                    rating={calculateReviewAverage(
-                      reviews,
-                      restaurant.id
-                    ).toString()}
+                    rating={calculateReviewAverage(reviews, restaurant.id)}
                   />
                   <>
-                    {" "}
                     {reviewCount.map((value) => {
                       return value.restaurant_id === restaurant.id
-                        ? `(${value.count})`
+                        ? ` (${value.count})`
                         : "";
                     })}
                   </>
